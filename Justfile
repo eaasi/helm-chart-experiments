@@ -1,3 +1,4 @@
+chart_dir := "./charts"
 config_dir := "./configs"
 
 ### HELPERS ###################################################################
@@ -9,3 +10,14 @@ spellcheck:
 # Run typo checker
 typocheck:
   typos --config "{{ config_dir }}/typos.toml"
+
+# Update chart's changelog
+update-changelog chart:
+  #!/usr/bin/env sh
+  set -eua
+  test -f cliff.env && . ./cliff.env
+  set +a
+  cd "{{ chart_dir / chart }}"
+  git cliff --bump --unreleased \
+    --tag-pattern "{{ chart }}-.+" \
+    --prepend "CHANGELOG.md"
