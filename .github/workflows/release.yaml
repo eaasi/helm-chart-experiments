@@ -128,6 +128,7 @@ jobs:
             --owner "${{ env.REPOSITORY_OWNER }}" \
             --git-repo "${{ env.REPOSITORY_NAME }}" \
             --token "${{ secrets.GITHUB_TOKEN }}" \
+            --release-notes-file "${{ env.RELEASE_NOTES_FILE_NAME }}" \
             --commit "${{ github.sha }}"
       - name: Update chart repository index
         run: |
