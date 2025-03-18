@@ -78,6 +78,7 @@ jobs:
           start-args: '--namespace eaasi'
           cpus: 'no-limit'
           memory: 'no-limit'
+          wait: 'apiserver,system_pods'
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
