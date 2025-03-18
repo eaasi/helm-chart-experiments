@@ -74,6 +74,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Start Minikube cluster
         uses: medyagh/setup-minikube@v0.0.20
+        with:
+          cpus: 'no-limit'
+          memory: 'no-limit'
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
