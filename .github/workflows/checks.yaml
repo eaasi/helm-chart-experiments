@@ -46,6 +46,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install Just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
@@ -57,6 +61,8 @@ jobs:
           check-latest: true
       - name: Install chart-testing
         uses: helm/chart-testing-action@v2.7.0
+      - name: Add external chart repositories
+        run: just add-chart-repos
       - name: Run chart linters and validators
         run: ct lint --config ./configs/chart-testing.yaml
 
