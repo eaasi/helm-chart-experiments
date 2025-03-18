@@ -47,6 +47,10 @@ jobs:
         with:
           # Fetch whole history if workflow was triggered by a pull-request
           fetch-depth: ${{ (github.event_name == 'pull_request') && 0 || 1 }}
+      - name: Install Just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
@@ -58,6 +62,8 @@ jobs:
           check-latest: true
       - name: Install chart-testing
         uses: helm/chart-testing-action@v2.7.0
+      - name: Add external chart repositories
+        run: just add-chart-repos
       - name: Run chart linters and validators
         run: ct lint --config ./configs/chart-testing.yaml ${{ env.CHART_TESTING_ARGS }}
         env:
