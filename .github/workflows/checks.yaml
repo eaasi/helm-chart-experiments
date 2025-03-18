@@ -75,6 +75,7 @@ jobs:
       - name: Start Minikube cluster
         uses: medyagh/setup-minikube@v0.0.20
         with:
+          start-args: '--namespace eaasi'
           cpus: 'no-limit'
           memory: 'no-limit'
       - name: Install Helm
