@@ -52,6 +52,7 @@ jobs:
       contents: write
     needs:
       - checks
+      - release-notes
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,6 +62,11 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: Download prepared release notes
+        uses: actions/download-artifact@v5
+        with:
+          pattern: '*${{ env.RELEASE_NOTES_ARTIFACT_SUFFIX }}'
+          merge-multiple: true
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
         with:
