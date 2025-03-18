@@ -125,6 +125,7 @@ jobs:
           cr upload --config "${{ env.CHART_RELEASER_CONFIG }}" \
             --token "${{ secrets.GITHUB_TOKEN }}" \
             --commit "${{ github.sha }}" \
+            --release-notes-file "${{ env.RELEASE_NOTES_FILE_NAME }}" \
             --skip-existing
       - name: Update chart repository index
         run: |
