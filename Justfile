@@ -102,3 +102,7 @@ cluster-delete name=cluster:
 # Deploy the database-operator
 deploy-database-operator name="database-operator" ns="cnpg-system" *args="": \
   (upgrade "database" name ns "-f" (chart_dir / "database/configs/operator.yaml") args)
+
+# Deploy the database-cluster
+deploy-database-cluster name="database-cluster" ns="database" *args="": \
+  (upgrade "database" name ns args)
