@@ -114,4 +114,6 @@ jobs:
       - name: Add external chart repositories
         run: just add-chart-repos
       - name: Install and test charts
-        run: ct install --config ./configs/chart-testing.yaml --all
+        run: |
+          just deploy-database-operator
+          ct install --config ./configs/chart-testing.yaml --all
