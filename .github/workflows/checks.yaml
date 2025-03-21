@@ -108,9 +108,11 @@ jobs:
         uses: azure/setup-helm@v4
         with:
           version: v3.17.0
-      - name: Install chart-testing
-        uses: helm/chart-testing-action@v2.7.0
       - name: Add external chart repositories
         run: just add-chart-repos
-      - name: Install and test charts
-        run: ct install --config ./configs/chart-testing.yaml --all
+      - name: Build chart dependencies
+        run: just build-chart-deps
+      - name: Install charts
+        run: just deploy-all
+      - name: Test charts
+        run: just test-all
