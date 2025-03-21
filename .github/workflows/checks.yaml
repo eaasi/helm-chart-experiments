@@ -101,11 +101,17 @@ jobs:
           cpus: 'no-limit'
           memory: 'no-limit'
           wait: 'apiserver,system_pods'
+      - name: Install Just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
           version: v3.17.0
       - name: Install chart-testing
         uses: helm/chart-testing-action@v2.7.0
+      - name: Add external chart repositories
+        run: just add-chart-repos
       - name: Install and test charts
         run: ct install --config ./configs/chart-testing.yaml --all
