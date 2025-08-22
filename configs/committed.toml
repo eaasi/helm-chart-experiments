@@ -5,7 +5,7 @@ subject_length = 0
 subject_capitalized = false
 subject_not_punctuated = true
 imperative_subject = true
-merge_commit = true
+merge_commit = false
 no_fixup = true
 no_wip = true
 
