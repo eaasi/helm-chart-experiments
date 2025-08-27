@@ -1,4 +1,4 @@
-name: CD
+name: continuous-delivery
 on:
   push:
     branches:
@@ -15,17 +15,17 @@ env:
   CLICOLOR: 1
 
 jobs:
-  checks:
+  run-ci-checks:
     uses: ./.github/workflows/checks.yaml
 
-  release-notes:
+  prepare-release-notes:
     runs-on: ubuntu-latest
     needs:
-      - checks
-    if: ${{ needs.checks.outputs.charts != '[]' }}
+      - run-ci-checks
+    if: ${{ needs.run-ci-checks.outputs.charts != '[]' }}
     strategy:
       matrix:
-        chart: ${{ fromJSON(needs.checks.outputs.charts) }}
+        chart: ${{ fromJSON(needs.run-ci-checks.outputs.charts) }}
     env:
       CHANGELOG_FILE: ${{ matrix.chart.path }}/CHANGELOG.md
       RELEASE_NOTES_FILE: ${{ matrix.chart.path }}/RELEASE.md
@@ -49,13 +49,13 @@ jobs:
             # NOTE: using a glob to preserve path!
             **/${{ env.RELEASE_NOTES_FILENAME }}
 
-  release:
+  release-charts:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     needs:
-      - checks
-      - release-notes
+      - run-ci-checks
+      - prepare-release-notes
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
