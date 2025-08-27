@@ -29,6 +29,7 @@ jobs:
     env:
       CHANGELOG_FILE: ${{ matrix.chart.path }}/CHANGELOG.md
       RELEASE_NOTES_FILE: ${{ matrix.chart.path }}/RELEASE.md
+      RELEASE_NOTES_FILENAME: RELEASE.md
     steps:
       - name: Checkout chart's changelog
         uses: actions/checkout@v4
@@ -44,7 +45,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.chart.name }}-${{ env.RELEASE_NOTES_ARTIFACT_SUFFIX }}
-          path: ${{ env.RELEASE_NOTES_FILE }}
+          path: |
+            # NOTE: using a glob to preserve path!
+            **/${{ env.RELEASE_NOTES_FILENAME }}
 
   release:
     runs-on: ubuntu-latest
