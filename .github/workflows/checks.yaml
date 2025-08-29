@@ -53,7 +53,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # Fetch whole history if workflow was triggered from non-main branch
+          fetch-depth: ${{ (github.ref != 'refs/heads/main') && '0' || '1' }}
       - name: Install Just
         uses: taiki-e/install-action@v2
         with:
@@ -74,8 +75,11 @@ jobs:
       - name: Run chart linters and validators
         run: |
           set -o pipefail
-          ct lint --config ./configs/chart-testing.yaml \
+          ct lint --config ./configs/chart-testing.yaml ${{ env.CHART_TESTING_ARGS }} \
             | tee ${{ env.CHART_TESTING_LOG }}
+        env:
+          # Enable change detection if workflow was triggered from non-main branch, else check all charts
+          CHART_TESTING_ARGS: ${{ (github.ref != 'refs/heads/main') && '--target-branch main' || '--all' }}
       - id: ct-log-parser
         name: Parse chart-testing logs
         uses: eaasi/chart-list-action@v0.3
